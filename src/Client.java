@@ -1,5 +1,7 @@
 import utils.HashMD5;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
@@ -9,13 +11,17 @@ public class Client {
 
   static Election election;
 
+  static Registry registry;
+
+  static final String EXIT = "exit";
+
   public static void main(String[] args) {
     String option, candidate, electorName;
     final Scanner inReader = new Scanner(System.in);
 
     try {
-      Registry rgsty = LocateRegistry.getRegistry(1888);
-      election = (Election) rgsty.lookup("1888");
+      registry = LocateRegistry.getRegistry(1888);
+      election = (Election) registry.lookup("Server");
 
       System.out.println("Type your name:");
       System.out.print("> ");
@@ -32,6 +38,7 @@ public class Client {
         System.out.println();
         System.out.print("> ");
         option = inReader.nextLine();
+
         switch (option) {
           case "1":
             System.out.println();
@@ -54,15 +61,18 @@ public class Client {
             break;
 
           default:
-            if (option.equalsIgnoreCase("exit")) break;
+            if (option.equalsIgnoreCase(EXIT)) break;
             System.out.println();
             System.out.println("I don't understand " + "'" + option + "'");
             break;
         }
-      } while (!option.equalsIgnoreCase("exit"));
+      } while (!option.equalsIgnoreCase(EXIT));
 
+      System.out.println();
       System.out.println("Disconnecting...");
-    } catch (Exception e) {
+    } catch (RemoteException e) {
+      System.out.println("Server error: " + e.getMessage());
+    } catch (NotBoundException e) {
       System.out.println("Client error: " + e.getMessage());
       e.printStackTrace();
     }
