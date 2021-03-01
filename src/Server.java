@@ -66,7 +66,7 @@ public class Server extends UnicastRemoteObject implements Election {
   @Override
   public String result(String candidate) throws RemoteException {
     if (!votes.containsKey(candidate)) return ("This candidate isn't registered");
-    else if (votes.containsKey(candidate)) return ("Votes: " + votes.get(candidate).toString());
+    else if (votes.containsKey(candidate)) return (candidates.get(candidate) + " has " + votes.get(candidate).toString() + " votes");
     System.out.println("Unknown error on method result");
     return ("Unknown error");
   }
@@ -77,6 +77,8 @@ public class Server extends UnicastRemoteObject implements Election {
       Registry rgsty = LocateRegistry.createRegistry(1888);
       Server server = new Server();
       System.out.println("Server initialized");
+      System.out.println();
+      System.out.println("Logs:");
       rgsty.rebind("1888", server);
     } catch (Exception e) {
       System.out.println("error: " + e.getMessage());
