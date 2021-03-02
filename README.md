@@ -38,7 +38,7 @@ $ git clone https://github.com/PUC-DISCIPLINAS/election-java-rmi-ianbandrade.git
 
 ```bash
 # Go to folder
-$ cd chat-multicast-java-ianbandrade/out/production/election-java-rmi-ianbandrade
+$ cd election-java-rmi-ianbandrade/out/production/election-java-rmi-ianbandrade
 
 # Start the server
 $ java Server
@@ -50,7 +50,7 @@ The console going to show the result
 
 ```bash
 # Go to folder
-$ cd chat-multicast-java-ianbandrade/out/production/election-java-rmi-ianbandrade
+$ cd election-java-rmi-ianbandrade/out/production/election-java-rmi-ianbandrade
 
 # Start the client
 $ java Client
