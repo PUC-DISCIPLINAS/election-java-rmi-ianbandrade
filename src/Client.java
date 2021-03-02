@@ -1,10 +1,12 @@
 import utils.HashMD5;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Client {
   static String message = "blank";
@@ -16,6 +18,7 @@ public class Client {
   static final String EXIT = "exit";
 
   public static void main(String[] args) {
+
     String option, candidate, electorName;
     final Scanner inReader = new Scanner(System.in);
 
@@ -46,8 +49,27 @@ public class Client {
             System.out.print("> ");
             candidate = inReader.nextLine();
             System.out.println();
-            message = election.vote(new HashMD5(electorName).getElector(), candidate);
-            System.out.println(message);
+            try {
+              message = election.vote(new HashMD5(electorName).getElector(), candidate);
+              System.out.println(message);
+            } catch (RemoteException e) {
+              System.out.println("Retry connection to server...");
+              while (true) {
+                try {
+                  election = (Election) registry.lookup("Server");
+                  message = election.vote(new HashMD5(electorName).getElector(), candidate);
+                  System.out.println();
+                  System.out.println(message);
+                  break;
+                } catch (IOException e2) {
+                  try {
+                    TimeUnit.MILLISECONDS.sleep(10000);
+                  } catch (InterruptedException e3) {
+                    System.out.println("Reconnection failed!");
+                  }
+                }
+              }
+            }
             break;
 
           case "2":
@@ -56,8 +78,27 @@ public class Client {
             System.out.print("> ");
             candidate = inReader.nextLine();
             System.out.println();
-            message = election.result(candidate);
-            System.out.println(message);
+            try {
+              message = election.result(candidate);
+              System.out.println(message);
+            } catch (RemoteException e) {
+              System.out.println("Retry connection to server...");
+              while (true) {
+                try {
+                  election = (Election) registry.lookup("Server");
+                  message = election.result(candidate);
+                  System.out.println();
+                  System.out.println(message);
+                  break;
+                } catch (IOException e2) {
+                  try {
+                    TimeUnit.MILLISECONDS.sleep(10000);
+                  } catch (InterruptedException e3) {
+                    System.out.println("Reconnection failed!");
+                  }
+                }
+              }
+            }
             break;
 
           default:
