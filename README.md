@@ -7,9 +7,9 @@
    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#techs">Techs</a>
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-<a href="#techs">External Libraries</a>
+<a href="#external libraries">External Libraries</a>
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#external libraries">Run</a>
+  <a href="#run">Run</a>
 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#license">License</a>
 </div>
