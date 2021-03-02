@@ -7,8 +7,6 @@
    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#techs">Techs</a>
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-<a href="#external libraries">External Libraries</a>
-  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#run">Run</a>
 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#license">License</a>
@@ -22,7 +20,7 @@ There is a simple Election system using Java RMI.
 
 - Java ```1.8```
 
-## External Libraries
+### External Libraries
 
 - OpenCSV ```v5.3```
 - Apache Commons Lang ```v3.3```
