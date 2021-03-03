@@ -22,8 +22,8 @@ There is a simple Election system using Java RMI.
 
 ### External Libraries
 
-- OpenCSV ```v5.3```
-- Apache Commons Lang ```v3.3```
+- [OpenCSV](https://sourceforge.net/projects/opencsv/) ```v5.3```
+- [Apache Commons Lang](https://commons.apache.org/proper/commons-lang/download_lang.cgi) ```v3.3```
 
 ## Run
 
