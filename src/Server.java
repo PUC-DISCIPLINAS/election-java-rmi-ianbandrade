@@ -1,16 +1,10 @@
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.exceptions.CsvException;
-
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 import java.util.TreeMap;
 
 public class Server extends UnicastRemoteObject implements Election {
@@ -27,17 +21,20 @@ public class Server extends UnicastRemoteObject implements Election {
   private void fillMaps() {
     try {
       String CSV_FILE = "src/assets/senadores.csv";
-      Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE));
-      CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
+      FileReader fileReader = new FileReader(CSV_FILE);
+      BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-      List<String[]> lines = csvReader.readAll();
-      for (String[] line : lines)
-        for (String column : line) {
-          candidates.put(column.split(";")[0], column.split(";")[1]);
-          votes.put(column.split(";")[0], 0);
-        }
+      String[] aux;
 
-    } catch (IOException | CsvException e) {
+      for (String line = bufferedReader.readLine();
+          line != null;
+          line = bufferedReader.readLine()) {
+        aux = line.split(";");
+        candidates.put(aux[0], aux[1]);
+        votes.put(aux[0], 0);
+      }
+
+    } catch (IOException e) {
       System.out.println("Error: " + e.getMessage());
       e.printStackTrace();
     }
