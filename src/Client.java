@@ -9,17 +9,15 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Client {
-  static String message = "blank";
-
-  static Election election;
-
-  static Registry registry;
-
   static final String EXIT = "exit";
+  static String message = "blank";
+  static Election election;
+  static Registry registry;
 
   public static void main(String[] args) {
 
     String option, candidate, electorName;
+    int count = 0;
     final Scanner inReader = new Scanner(System.in);
 
     try {
@@ -61,14 +59,23 @@ public class Client {
                   System.out.println();
                   System.out.println(message);
                   break;
-                } catch (IOException e2) {
+                } catch (RemoteException e2) {
                   try {
-                    TimeUnit.MILLISECONDS.sleep(10000);
+                    TimeUnit.MILLISECONDS.sleep(1000);
+                    count++;
+                    if (count == 9) throw new InterruptedException();
                   } catch (InterruptedException e3) {
+                    System.out.println();
                     System.out.println("Reconnection failed!");
+                    count = 0;
+                    break;
                   }
+                } catch (ClassNotFoundException classNotFoundException) {
+                  classNotFoundException.printStackTrace();
                 }
               }
+            } catch (IOException | ClassNotFoundException e) {
+              e.printStackTrace();
             }
             break;
 
@@ -83,6 +90,7 @@ public class Client {
               System.out.println(message);
             } catch (RemoteException e) {
               System.out.println("Retry connection to server...");
+
               while (true) {
                 try {
                   election = (Election) registry.lookup("Server");
@@ -90,14 +98,23 @@ public class Client {
                   System.out.println();
                   System.out.println(message);
                   break;
-                } catch (IOException e2) {
+                } catch (RemoteException e2) {
                   try {
-                    TimeUnit.MILLISECONDS.sleep(10000);
+                    TimeUnit.MILLISECONDS.sleep(1000);
+                    count++;
+                    if (count == 4) throw new InterruptedException();
                   } catch (InterruptedException e3) {
+                    System.out.println();
                     System.out.println("Reconnection failed!");
+                    count = 0;
+                    break;
                   }
+                } catch (ClassNotFoundException classNotFoundException) {
+                  classNotFoundException.printStackTrace();
                 }
               }
+            } catch (IOException | ClassNotFoundException e) {
+              e.printStackTrace();
             }
             break;
 
@@ -111,7 +128,7 @@ public class Client {
 
       System.out.println();
       System.out.println("Disconnecting...");
-    } catch (RemoteException e) {
+    } catch (IOException e) {
       System.out.println("Server error: " + e.getMessage());
     } catch (NotBoundException e) {
       System.out.println("Client error: " + e.getMessage());
